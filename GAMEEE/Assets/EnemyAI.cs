@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
     Transform target;
     NavMeshAgent agent;
     Animator anim;
+    public EnemySight enemySight;
 
     void Start()
     {
@@ -21,7 +22,7 @@ public class EnemyAI : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if(distance > 2)
+        if(distance > 2 && distance < 20)
         {
             agent.updatePosition = true;
             agent.SetDestination(target.position);
