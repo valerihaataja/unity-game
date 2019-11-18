@@ -8,6 +8,7 @@ public class distance : MonoBehaviour
     public GameObject Player;
     public float dis;
     bool hasOpened = false;
+
    
     void Update()
     {
@@ -16,6 +17,9 @@ public class distance : MonoBehaviour
         {
            
             Door.SetActive(false);
+            hasOpened = true;
+       
+           
             
         }else 
         {
