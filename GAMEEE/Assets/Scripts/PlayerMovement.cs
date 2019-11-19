@@ -16,11 +16,15 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance;
     public LayerMask groundMask;
+    public Transform ceilingCheck;
+    public float ceilingDistance;
+    public LayerMask ceilingMask;
 
 
 
     Vector3 velocity;
     bool isGrounded;
+    bool hitCeiling;
 
 
     // Start is called before the first frame update
@@ -35,14 +39,21 @@ public class PlayerMovement : MonoBehaviour
 
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        hitCeiling = Physics.CheckSphere(ceilingCheck.position, ceilingDistance, ceilingMask);
+
+        if(hitCeiling){
+            print ("hitCeiling");
+        }
 
 
         if(isGrounded && velocity.y < 0){
             controller.slopeLimit = 45f;
             velocity.y = -2f;
         }
-
-
+        if(isGrounded == false && Input.GetKey(KeyCode.LeftControl))
+        {
+            speed = 6f;
+        }
 
         if(isGrounded && Input.GetKey(KeyCode.LeftControl))
         {
