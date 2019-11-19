@@ -8,7 +8,7 @@ public class Gun : MonoBehaviour
     //public float fireRate = 15f;
     public Camera fpsCam;
 
-    public ParticleSystem Flash;
+  //  public ParticleSystem Flash;
     public AudioSource shotSound;
 
     public GameObject impactEffect;
@@ -27,7 +27,7 @@ public class Gun : MonoBehaviour
     void Shoot()
     {
         shotSound.Play();
-        Flash.Play();
+        //Flash.Play();
         RaycastHit hit;
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
