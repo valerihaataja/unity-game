@@ -17,6 +17,8 @@ public class EnemyAI : MonoBehaviour
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
 
+    private float damage = 10f;
+
     public bool playerInSight;
     public float distance;
 
@@ -26,6 +28,8 @@ public class EnemyAI : MonoBehaviour
     private LineRenderer objectLineRenderer;
 
     private ParticleSystem particleSystem;
+
+    PlayerHealth playerHealth;
 
     public enum State
     {
@@ -42,6 +46,8 @@ public class EnemyAI : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         lastSightedLocation = transform.position;
+
+        playerHealth = target.GetComponent<PlayerHealth>();
 
         state = EnemyAI.State.PATROL;
 
@@ -80,8 +86,11 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        distance = Vector3.Distance(transform.position, target.position);
-        Vision();
+        if(alive)
+        {
+            distance = Vector3.Distance(transform.position, target.position);
+            Vision();
+        }
     }
 
     void Patrol()
@@ -110,10 +119,7 @@ public class EnemyAI : MonoBehaviour
         agent.speed = 4.5f;
         //particleSystem.Play();
         //GameObject.Find("MuzzleFlashEffect").transform.GetComponent<ParticleSystem>().Play();
-        if(!playerInSight)
-        {
-            state = EnemyAI.State.INVESTIGATE;
-        }
+
         if(distance < 2f)
         {
             agent.updatePosition = false;
@@ -125,7 +131,13 @@ public class EnemyAI : MonoBehaviour
         else
         {
             agent.updatePosition = true;
+            agent.isStopped = false;
             anim.SetBool("HasPunched", false);
+        }
+
+        if (!playerInSight)
+        {
+            state = EnemyAI.State.INVESTIGATE;
         }
     }
 
@@ -179,5 +191,22 @@ public class EnemyAI : MonoBehaviour
     public void HitEvent()
     {
         Debug.Log("Player hit!");
+        if(distance < 2f)
+        {
+            playerHealth.takeDamage(damage);
+        }
+    }
+
+    public void Death()
+    {
+        if(alive)
+        {
+            alive = false;
+            agent.velocity = Vector3.zero;
+            agent.updatePosition = false;
+            agent.isStopped = true;
+            anim.SetTrigger("IsDead");
+            Destroy(gameObject, 10);
+        }
     }
 }
