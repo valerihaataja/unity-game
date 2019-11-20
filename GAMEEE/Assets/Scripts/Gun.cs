@@ -7,8 +7,10 @@ public class Gun : MonoBehaviour
     public float impactForce = 30f;
     //public float fireRate = 15f;
     public Camera fpsCam;
+    public GameObject FlashLight;
+    bool LightisOn = false;
 
-  //  public ParticleSystem Flash;
+    public ParticleSystem Flash;
     public AudioSource shotSound;
 
     public GameObject impactEffect;
@@ -22,12 +24,27 @@ public class Gun : MonoBehaviour
             //nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
         }
+        if (Input.GetKeyDown("f"))
+        {
+            if(LightisOn == false)
+            {
+                FlashLight.gameObject.SetActive(true);
+                LightisOn = true;
+            }
+           else if(LightisOn == true)
+            {
+                FlashLight.gameObject.SetActive(false);
+                LightisOn = false;
+            }
+           
+        }
+        
+        
     }
-
     void Shoot()
     {
         shotSound.Play();
-        //Flash.Play();
+        Flash.Play();
         RaycastHit hit;
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
