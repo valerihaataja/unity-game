@@ -114,14 +114,17 @@ public class EnemyAI : MonoBehaviour
         {
             state = EnemyAI.State.INVESTIGATE;
         }
-        if(distance < 3f)
+        if(distance < 2f)
         {
+            agent.updatePosition = false;
+            agent.isStopped = true;
             anim.SetBool("IsWalking", false);
             anim.SetBool("IsRunning", false);
             anim.SetBool("HasPunched", true);
         }
         else
         {
+            agent.updatePosition = true;
             anim.SetBool("HasPunched", false);
         }
     }
@@ -150,7 +153,7 @@ public class EnemyAI : MonoBehaviour
             if (Physics.Raycast(transform.position + transform.up * 0.5f, direction.normalized, out hit, perceptionDistance))
             {
                 Debug.DrawLine(transform.position + Vector3.up * 1.36f, hit.point, Color.green);
-                Debug.Log(hit.collider.gameObject.name);
+               // Debug.Log(hit.collider.gameObject.name);
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     state = EnemyAI.State.CHASE;
@@ -171,5 +174,10 @@ public class EnemyAI : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void HitEvent()
+    {
+        Debug.Log("Player hit!");
     }
 }
