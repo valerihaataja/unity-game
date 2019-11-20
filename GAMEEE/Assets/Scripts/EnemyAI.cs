@@ -12,6 +12,8 @@ public class EnemyAI : MonoBehaviour
     Transform target;
     NavMeshAgent agent;
 
+    Animator anim;
+
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
 
@@ -22,6 +24,8 @@ public class EnemyAI : MonoBehaviour
 
     private Transform childObject;
     private LineRenderer objectLineRenderer;
+
+    private ParticleSystem particleSystem;
 
     public enum State
     {
@@ -43,13 +47,15 @@ public class EnemyAI : MonoBehaviour
 
         alive = true;
 
-        childObject = GameObject.Find("Laser").transform;
-        objectLineRenderer = childObject.GetComponent<LineRenderer>();
-        objectLineRenderer.enabled = false;
+        //childObject = GameObject.Find("Laser").transform;
+        //objectLineRenderer = childObject.GetComponent<LineRenderer>();
+        //objectLineRenderer.enabled = false;
 
+        //childObject = GameObject.Find("MuzzleFlashEffect").transform;
+        //particleSystem = childObject.GetComponent<ParticleSystem>();
+        anim = GetComponent<Animator>();
 
         StartCoroutine("FSM");
-        //anim = GetComponent<Animator>();
     }
 
     IEnumerator FSM()
@@ -82,12 +88,15 @@ public class EnemyAI : MonoBehaviour
     {
         agent.autoBraking = false;
 
+        anim.SetBool("IsWalking", true);
+        anim.SetBool("IsRunning", false);
+
         if (patrolPoints.Length == 0)
         {
             return;
         }
         agent.destination = patrolPoints[destPoint].position;
-        if(!agent.pathPending && agent.remainingDistance < 0.5f)
+        if(!agent.pathPending && agent.remainingDistance < 1f)
         {
             destPoint = (destPoint + 1) % patrolPoints.Length;
         }
@@ -95,19 +104,37 @@ public class EnemyAI : MonoBehaviour
 
     void Chase()
     {
-        objectLineRenderer.enabled = true;
+        //objectLineRenderer.enabled = true;
         agent.destination = target.position;
+        anim.SetBool("IsRunning", true);
+        agent.speed = 4.5f;
+        //particleSystem.Play();
+        //GameObject.Find("MuzzleFlashEffect").transform.GetComponent<ParticleSystem>().Play();
         if(!playerInSight)
         {
             state = EnemyAI.State.INVESTIGATE;
+        }
+        if(distance < 3f)
+        {
+            anim.SetBool("IsWalking", false);
+            anim.SetBool("IsRunning", false);
+            anim.SetBool("HasPunched", true);
+        }
+        else
+        {
+            anim.SetBool("HasPunched", false);
         }
     }
 
     void Investigate()
     {
-        objectLineRenderer.enabled = false;
+        //particleSystem.Stop();
+        anim.SetBool("IsWalking", true);
+        anim.SetBool("IsRunning", false);
+
+       // objectLineRenderer.enabled = false;
         agent.destination = lastSightedLocation;
-        if (agent.remainingDistance < 0.5f)
+        if (agent.remainingDistance < 1f)
         {
             state = EnemyAI.State.PATROL;
         }
