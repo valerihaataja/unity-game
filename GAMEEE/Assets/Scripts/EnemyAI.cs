@@ -17,6 +17,8 @@ public class EnemyAI : MonoBehaviour
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
 
+    private float damage = 10f;
+
     public bool playerInSight;
     public float distance;
 
@@ -26,6 +28,8 @@ public class EnemyAI : MonoBehaviour
     private LineRenderer objectLineRenderer;
 
     private ParticleSystem particleSystem;
+
+    PlayerHealth playerHealth;
 
     public enum State
     {
@@ -42,6 +46,8 @@ public class EnemyAI : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         lastSightedLocation = transform.position;
+
+        playerHealth = target.GetComponent<PlayerHealth>();
 
         state = EnemyAI.State.PATROL;
 
@@ -80,8 +86,11 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        distance = Vector3.Distance(transform.position, target.position);
-        Vision();
+        if(alive)
+        {
+            distance = Vector3.Distance(transform.position, target.position);
+            Vision();
+        }
     }
 
     void Patrol()
@@ -110,19 +119,25 @@ public class EnemyAI : MonoBehaviour
         agent.speed = 4.5f;
         //particleSystem.Play();
         //GameObject.Find("MuzzleFlashEffect").transform.GetComponent<ParticleSystem>().Play();
-        if(!playerInSight)
+
+        if(distance < 2f)
         {
-            state = EnemyAI.State.INVESTIGATE;
-        }
-        if(distance < 3f)
-        {
+            agent.updatePosition = false;
+            agent.isStopped = true;
             anim.SetBool("IsWalking", false);
             anim.SetBool("IsRunning", false);
             anim.SetBool("HasPunched", true);
         }
         else
         {
+            agent.updatePosition = true;
+            agent.isStopped = false;
             anim.SetBool("HasPunched", false);
+        }
+
+        if (!playerInSight)
+        {
+            state = EnemyAI.State.INVESTIGATE;
         }
     }
 
@@ -150,7 +165,7 @@ public class EnemyAI : MonoBehaviour
             if (Physics.Raycast(transform.position + transform.up * 0.5f, direction.normalized, out hit, perceptionDistance))
             {
                 Debug.DrawLine(transform.position + Vector3.up * 1.36f, hit.point, Color.green);
-                Debug.Log(hit.collider.gameObject.name);
+               // Debug.Log(hit.collider.gameObject.name);
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     state = EnemyAI.State.CHASE;
@@ -170,6 +185,28 @@ public class EnemyAI : MonoBehaviour
                     // anim.SetBool("Walk", false);
                 }
             }
+        }
+    }
+
+    public void HitEvent()
+    {
+        Debug.Log("Player hit!");
+        if(distance < 2f)
+        {
+            playerHealth.takeDamage(damage);
+        }
+    }
+
+    public void Death()
+    {
+        if(alive)
+        {
+            alive = false;
+            agent.velocity = Vector3.zero;
+            agent.updatePosition = false;
+            agent.isStopped = true;
+            anim.SetTrigger("IsDead");
+            Destroy(gameObject, 10);
         }
     }
 }

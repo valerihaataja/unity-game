@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Door
   - Flash light
+  - Metal
+  - Target
+  - ExplosiveBarrel
+  - Enemy
   layers:
   - Default
   - TransparentFX

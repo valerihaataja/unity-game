@@ -15,6 +15,8 @@ public class Gun : MonoBehaviour
 
     public GameObject impactEffect;
 
+    EnemyHealth enemyHealth;
+
     //private float nextTimeToFire = 0f;
 
     void Update()
@@ -48,17 +50,22 @@ public class Gun : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            Debug.Log(hit.transform.name);
-            Target target = hit.transform.GetComponent<Target>();
-            if(target != null)
+            if(hit.transform.tag == "Enemy")
             {
-                target.takeDamage(damage);
+                enemyHealth = hit.transform.GetComponent<EnemyHealth>();
+                enemyHealth.takeDamage(damage);
             }
-            if (target != null)
+            else
             {
-                hit.rigidbody.AddForce(-hit.normal * impactForce);
+                Debug.Log(hit.transform.name);
+                Target target = hit.transform.GetComponent<Target>();
+                if (target != null)
+                {
+                    target.takeDamage(damage);
+                    hit.rigidbody.AddForce(-hit.normal * impactForce);
+                }
             }
-          
+
             GameObject impactGO =Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impactGO, 2f);
         }
