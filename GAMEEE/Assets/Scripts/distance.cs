@@ -9,22 +9,23 @@ public class distance : MonoBehaviour
     public float dis;
     bool hasOpened = false;
 
-   
+
     void Update()
     {
         dis = Vector3.Distance(Door.transform.position, Player.transform.position);
-        if(dis < 4 )
+        if (dis < 4)
         {
-           
-            Door.SetActive(false);
-            hasOpened = true;
-       
-           
-            
-        }else 
+            if (Input.GetKeyDown("e") && hasOpened == false)
+            {
+                Door.SetActive(false);
+                hasOpened = true;
+            }
+       }
+        if (dis > 4)
         {
- 
             Door.SetActive(true);
+            hasOpened = false;
         }
     }
 }
+
