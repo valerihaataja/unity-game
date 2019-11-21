@@ -122,6 +122,7 @@ public class EnemyAI : MonoBehaviour
 
         if(distance < 2f)
         {
+            agent.velocity = Vector3.zero;
             agent.updatePosition = false;
             agent.isStopped = true;
             anim.SetBool("IsWalking", false);
