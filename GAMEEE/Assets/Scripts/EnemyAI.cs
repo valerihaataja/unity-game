@@ -16,6 +16,7 @@ public class EnemyAI : MonoBehaviour
 
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
+    public float hearingDistance = 20f;
 
     private float damage = 10f;
 
@@ -30,6 +31,7 @@ public class EnemyAI : MonoBehaviour
     private ParticleSystem particleSystem;
 
     PlayerHealth playerHealth;
+    PlayerMovement playerMovement;
 
     public enum State
     {
@@ -90,6 +92,7 @@ public class EnemyAI : MonoBehaviour
         {
             distance = Vector3.Distance(transform.position, target.position);
             Vision();
+            Hearing();
         }
     }
 
@@ -210,4 +213,41 @@ public class EnemyAI : MonoBehaviour
             Destroy(gameObject, 10);
         }
     }
+
+    void Hearing()
+    {
+        //Jos pelaaja liikkuu nopeasti tai ampuu
+        if(state != EnemyAI.State.CHASE)
+        {
+            NavMeshPath navMeshPath = new NavMeshPath();
+            if (agent.enabled)
+            {
+                agent.CalculatePath(target.position, navMeshPath);
+            }
+            Vector3[] allWayPoints = new Vector3[navMeshPath.corners.Length + 2];
+
+            allWayPoints[0] = transform.position;
+            allWayPoints[allWayPoints.Length - 1] = target.position;
+
+            for (int i = 0; i < navMeshPath.corners.Length; i++)
+            {
+                allWayPoints[i + 1] = navMeshPath.corners[i];
+            }
+
+            float pathLength = 0f;
+
+            for (int i = 0; i < allWayPoints.Length - 1; i++)
+            {
+                pathLength += Vector3.Distance(allWayPoints[i], allWayPoints[i + 1]);
+            }
+
+            if (pathLength < hearingDistance)
+            {
+                lastSightedLocation = target.position;
+                state = EnemyAI.State.INVESTIGATE;
+            }
+        }
+    }
+
+
 }
