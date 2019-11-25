@@ -7,25 +7,33 @@ public class distance : MonoBehaviour
     public GameObject Door;
     public GameObject Player;
     public float dis;
-    bool hasOpened = false;
+   
 
 
     void Update()
     {
+        Animator animator = Door.GetComponent<Animator>();
+        
         dis = Vector3.Distance(Door.transform.position, Player.transform.position);
-        if (dis < 4)
-        {
-            if (Input.GetKeyDown("e") && hasOpened == false)
+     
+            if (Input.GetKeyDown("e") && dis < 4)
             {
-                Door.SetActive(false);
-                hasOpened = true;
+                if (animator != null)
+                {
+
+                bool hasOpened = animator.GetBool("open");
+                animator.SetBool("open", true);
+    
+                }
             }
-       }
-        if (dis > 4)
-        {
-            Door.SetActive(true);
-            hasOpened = false;
-        }
+            if (dis > 4)
+            {
+                animator.SetBool("open", false);
+        
+                
+            }
+        
+      
     }
 }
 

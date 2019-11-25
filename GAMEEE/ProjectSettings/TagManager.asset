@@ -10,6 +10,7 @@ TagManager:
   - Target
   - ExplosiveBarrel
   - Enemy
+  - Pistol
   layers:
   - Default
   - TransparentFX

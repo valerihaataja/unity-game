@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-
+using UnityEngine.UI;
 public class WeaponSwitching : MonoBehaviour
 {
     public int selectedWeapon = 0;
-
+    public Text weaponText;
+   
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.SetActive(false);
         selectWeapon();
     }
 
@@ -14,6 +16,7 @@ public class WeaponSwitching : MonoBehaviour
     void Update()
     {
 
+       
         int previousSelectedWeapon = selectedWeapon;
 
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
@@ -30,7 +33,6 @@ public class WeaponSwitching : MonoBehaviour
             else
                 selectedWeapon--;
         }
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedWeapon = 0;
@@ -44,22 +46,47 @@ public class WeaponSwitching : MonoBehaviour
             selectedWeapon = 2;
         }
 
+
         if (previousSelectedWeapon != selectedWeapon)
         {
             selectWeapon();
         }
+        printText();
     }
 
-    void selectWeapon()
+    public void selectWeapon()
     {
+        
         int i = 0;
         foreach(Transform weapon in transform)
         {
             if (i == selectedWeapon)
                 weapon.gameObject.SetActive(true);
+                
             else
                 weapon.gameObject.SetActive(false);
             i++;
         }
     }
+
+    void printText()
+    { 
+
+        if (selectedWeapon == 0)
+        {
+            weaponText.text = "Plasma Pistol";
+           
+        }
+        if (selectedWeapon == 1)
+        {
+           weaponText.text = "Rifle";
+           
+        }
+        if (selectedWeapon == 2)
+        {
+           weaponText.text = "Heavy";
+        }
+    }
+   
+   
 }
