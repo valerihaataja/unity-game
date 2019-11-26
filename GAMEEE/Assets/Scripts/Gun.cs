@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
@@ -7,9 +8,8 @@ public class Gun : MonoBehaviour
     public float impactForce = 30f;
 //  public float fireRate = 15f;
     public Camera fpsCam;
-    public GameObject FlashLight;
-    bool LightisOn = false;
-
+    public GameObject Holder;
+    public int selected;
     public ParticleSystem Flash;
     public AudioSource shotSound;
 
@@ -17,39 +17,33 @@ public class Gun : MonoBehaviour
 
     EnemyHealth enemyHealth;
 
-  //private float nextTimeToFire = 0f;
+    //private float nextTimeToFire = 0f;
 
+
+    
     void Update()
     {
+     
+        
+
         if (Input.GetButtonDown("Fire1"))///Time.time >= nextTimeToFire)
         {
           //nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
         }
-        if (Input.GetKeyDown("f"))
-        {
-            if(LightisOn == false)
-            {
-                FlashLight.gameObject.SetActive(true);
-                LightisOn = true;
-            }
-           else if(LightisOn == true)
-            {
-                FlashLight.gameObject.SetActive(false);
-                LightisOn = false;
-            }
-           
-        }
+        
         
         
     }
     void Shoot()
     {
+
         shotSound.Play();
         Flash.Play();
         RaycastHit hit;
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
+
             if(hit.transform.tag == "Enemy")
             {
                 enemyHealth = hit.transform.GetComponent<EnemyHealth>();
@@ -70,4 +64,8 @@ public class Gun : MonoBehaviour
             Destroy(impactGO, 2f);
         }
     }
-}
+  
+       
+    }
+
+
