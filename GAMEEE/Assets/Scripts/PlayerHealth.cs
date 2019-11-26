@@ -12,6 +12,7 @@ public class PlayerHealth : MonoBehaviour
     public float damageDuration = 4f;
     private float fadeTime = 2f;
     Image image;
+    public RectTransform healthbar;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,8 @@ public class PlayerHealth : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        healthbar.sizeDelta = new Vector2(health * 4, healthbar.sizeDelta.y);
     }
     public void ShowDamageIndicator()
     {
