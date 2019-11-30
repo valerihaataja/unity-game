@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Door
   - Flash light
+  - Metal
+  - Target
+  - ExplosiveBarrel
+  - Enemy
+  - Pistol
+  - Distance Check
+  - Loot
   layers:
   - Default
   - TransparentFX

@@ -16,6 +16,9 @@ public class EnemyAI : MonoBehaviour
 
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
+    public float hearingDistance = 20f;
+
+    private float damage = 10f;
 
     public bool playerInSight;
     public float distance;
@@ -26,6 +29,9 @@ public class EnemyAI : MonoBehaviour
     private LineRenderer objectLineRenderer;
 
     private ParticleSystem particleSystem;
+
+    PlayerHealth playerHealth;
+    PlayerMovement playerMovement;
 
     public enum State
     {
@@ -42,6 +48,8 @@ public class EnemyAI : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         lastSightedLocation = transform.position;
+
+        playerHealth = target.GetComponent<PlayerHealth>();
 
         state = EnemyAI.State.PATROL;
 
@@ -80,8 +88,12 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        distance = Vector3.Distance(transform.position, target.position);
-        Vision();
+        if(alive)
+        {
+            distance = Vector3.Distance(transform.position, target.position);
+            Vision();
+            Hearing();
+        }
     }
 
     void Patrol()
@@ -110,12 +122,10 @@ public class EnemyAI : MonoBehaviour
         agent.speed = 4.5f;
         //particleSystem.Play();
         //GameObject.Find("MuzzleFlashEffect").transform.GetComponent<ParticleSystem>().Play();
-        if(!playerInSight)
-        {
-            state = EnemyAI.State.INVESTIGATE;
-        }
+
         if(distance < 2f)
         {
+            agent.velocity = Vector3.zero;
             agent.updatePosition = false;
             agent.isStopped = true;
             anim.SetBool("IsWalking", false);
@@ -125,7 +135,13 @@ public class EnemyAI : MonoBehaviour
         else
         {
             agent.updatePosition = true;
+            agent.isStopped = false;
             anim.SetBool("HasPunched", false);
+        }
+
+        if (!playerInSight)
+        {
+            state = EnemyAI.State.INVESTIGATE;
         }
     }
 
@@ -179,5 +195,59 @@ public class EnemyAI : MonoBehaviour
     public void HitEvent()
     {
         Debug.Log("Player hit!");
+        if(distance < 2f)
+        {
+            playerHealth.takeDamage(damage);
+        }
     }
+
+    public void Death()
+    {
+        if(alive)
+        {
+            alive = false;
+            agent.velocity = Vector3.zero;
+            agent.updatePosition = false;
+            agent.isStopped = true;
+            anim.SetTrigger("IsDead");
+            Destroy(gameObject, 10);
+        }
+    }
+
+    void Hearing()
+    {
+        //Jos pelaaja liikkuu nopeasti tai ampuu
+        if(state != EnemyAI.State.CHASE)
+        {
+            NavMeshPath navMeshPath = new NavMeshPath();
+            if (agent.enabled)
+            {
+                agent.CalculatePath(target.position, navMeshPath);
+            }
+            Vector3[] allWayPoints = new Vector3[navMeshPath.corners.Length + 2];
+
+            allWayPoints[0] = transform.position;
+            allWayPoints[allWayPoints.Length - 1] = target.position;
+
+            for (int i = 0; i < navMeshPath.corners.Length; i++)
+            {
+                allWayPoints[i + 1] = navMeshPath.corners[i];
+            }
+
+            float pathLength = 0f;
+
+            for (int i = 0; i < allWayPoints.Length - 1; i++)
+            {
+                pathLength += Vector3.Distance(allWayPoints[i], allWayPoints[i + 1]);
+            }
+
+            if (pathLength < hearingDistance)
+            {
+                lastSightedLocation = target.position;
+                state = EnemyAI.State.INVESTIGATE;
+            }
+        }
+    }
+
+
 }
