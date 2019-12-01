@@ -11,13 +11,19 @@ public class Gun : MonoBehaviour
     bool LightisOn = false;
 
     public ParticleSystem Flash;
-    public AudioSource shotSound;
+    AudioSource shotSound;
 
     public GameObject impactEffect;
 
     EnemyHealth enemyHealth;
 
   //private float nextTimeToFire = 0f;
+
+
+    void Start()
+    {
+        shotSound = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
