@@ -11,6 +11,8 @@ TagManager:
   - ExplosiveBarrel
   - Enemy
   - Pistol
+  - Distance Check
+  - Loot
   layers:
   - Default
   - TransparentFX

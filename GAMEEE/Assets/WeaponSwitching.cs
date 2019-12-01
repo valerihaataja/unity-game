@@ -4,10 +4,12 @@ public class WeaponSwitching : MonoBehaviour
 {
     public int selectedWeapon = 0;
     public Text weaponText;
-   
+
+
     // Start is called before the first frame update
     void Start()
     {
+      
         gameObject.SetActive(false);
         selectWeapon();
     }
@@ -15,8 +17,8 @@ public class WeaponSwitching : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
        
+
         int previousSelectedWeapon = selectedWeapon;
 
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
@@ -63,9 +65,9 @@ public class WeaponSwitching : MonoBehaviour
             if (i == selectedWeapon)
                 weapon.gameObject.SetActive(true);
                 
-            else
-                weapon.gameObject.SetActive(false);
-            i++;
+           else
+               weapon.gameObject.SetActive(false);
+           i++;
         }
     }
 
@@ -88,5 +90,6 @@ public class WeaponSwitching : MonoBehaviour
         }
     }
    
+ 
    
 }
