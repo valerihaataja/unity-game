@@ -9,7 +9,7 @@ public class Gun : MonoBehaviour
     public float fireRate = 15f;
     public Camera fpsCam;
     public ParticleSystem Flash;
-    public AudioSource shotSound;
+    AudioSource shotSound;
 
     public GameObject impactEffect;
 
@@ -18,20 +18,27 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0f;
 
 
-    
+
+    void Start()
+    {
+        shotSound = GetComponent<AudioSource>();
+    }
+
     void Update()
     {
 
 
-       
+
+
+
         if (Input.GetButton("Fire1")&&Time.time >= nextTimeToFire)
         {
           nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
         }
 
-        
-        
+
+
     }
     void Shoot()
     {
@@ -62,8 +69,6 @@ public class Gun : MonoBehaviour
             Destroy(impactGO, 2f);
         }
     }
-  
-       
+
+
     }
-
-
