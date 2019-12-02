@@ -14,10 +14,14 @@ public class Looting : MonoBehaviour
     public Camera fpsCamera;
     public float range = 4f;
     public bool hasSeen = false;
-    public int lootedWeapons = 1;
-    
+    public GameObject[] guns;
+    public GameObject WeaponHolder;
+    public GameObject LootLight;
+    bool hasLooted = false;
+    public int gunId = 0;
 
 
+ 
 
     // Update is called once per frame
     void Update()
@@ -50,19 +54,19 @@ public class Looting : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range))
         {
-            if(hit.transform.tag == "Loot")
+            if (hit.transform.tag == "Loot")
             {
                 Gun.SetActive(true);
                 Debug.Log("Looting!");
-                GameObject weapons = GameObject.Find("WeaponHolder");
-             
-                    weapons.transform.GetChild(0).gameObject.SetActive(true);
-                    weapons.transform.GetChild(1).gameObject.SetActive(false);
-                    weapons.transform.GetChild(2).gameObject.SetActive(false);
-                
-                
+                hasLooted = true;
+                guns[gunId].transform.parent = WeaponHolder.transform;
+                //guns[2].transform.parent = WeaponHolder.transform;
+                //GameObject.Find("WeaponHolder").GetComponent<WeaponSwitching>().selectWeapon();
             }
-           
+           if(hasLooted == true)
+            {
+                LootLight.gameObject.SetActive(false);
+            }
         }
     }
     void PanelAnimation()

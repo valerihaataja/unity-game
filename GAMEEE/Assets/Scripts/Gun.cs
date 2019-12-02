@@ -6,10 +6,8 @@ public class Gun : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public float impactForce = 30f;
-//  public float fireRate = 15f;
+    public float fireRate = 15f;
     public Camera fpsCam;
-    public GameObject Holder;
-    public int selected;
     public ParticleSystem Flash;
     public AudioSource shotSound;
 
@@ -17,21 +15,21 @@ public class Gun : MonoBehaviour
 
     EnemyHealth enemyHealth;
 
-    //private float nextTimeToFire = 0f;
+    private float nextTimeToFire = 0f;
 
 
     
     void Update()
     {
-     
-        
 
-        if (Input.GetButtonDown("Fire1"))///Time.time >= nextTimeToFire)
+
+       
+        if (Input.GetButton("Fire1")&&Time.time >= nextTimeToFire)
         {
-          //nextTimeToFire = Time.time + 1f / fireRate;
+          nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
         }
-        
+
         
         
     }
