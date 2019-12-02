@@ -52,7 +52,7 @@ public class WeaponSwitching : MonoBehaviour
         {
             selectWeapon();
         }
-        printText();
+        setWeapons();
     }
 
     public void selectWeapon()
@@ -72,30 +72,31 @@ public class WeaponSwitching : MonoBehaviour
             }
     }
 
-    void printText()
+    void setWeapons()
     { 
 
 
-        if (selectedWeapon == 0 && transform.childCount >= 1)
+        if (selectedWeapon == 0)
         {
-            weaponText.text = "Plasma Pistol";
-            transform.GetChild(0).gameObject.SetActive(true);
            
+          //  transform.GetChild(0).gameObject.SetActive(true);
+            weaponText.text = "Plasma Pistol";
         }
-        if (selectedWeapon == 1 && transform.childCount >= 2)
+        if ( selectedWeapon == 1)
         {
-           weaponText.text = "Rifle";
-            transform.GetChild(1).gameObject.SetActive(true);
 
+          //  transform.GetChild(1).gameObject.SetActive(true);
+            weaponText.text = "Rifle";
         }
-        if (selectedWeapon == 2 && transform.childCount >= 3)
+        if (selectedWeapon == 2)
         {
-           weaponText.text = "Heavy";
-            transform.GetChild(2).gameObject.SetActive(true);
-
+           // transform.GetChild(2).gameObject.SetActive(true);
+            weaponText.text = "Heavy";
         }
 
     }
+
+   
    
  
    

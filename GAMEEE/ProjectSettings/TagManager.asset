@@ -13,6 +13,8 @@ TagManager:
   - Pistol
   - Distance Check
   - Loot
+  - Rifle
+  - Heavy
   layers:
   - Default
   - TransparentFX

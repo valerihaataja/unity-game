@@ -19,6 +19,7 @@ public class Looting : MonoBehaviour
     public GameObject LootLight;
     bool hasLooted = false;
     public int gunId = 0;
+  
 
 
  
@@ -56,10 +57,26 @@ public class Looting : MonoBehaviour
         {
             if (hit.transform.tag == "Loot")
             {
-                Gun.SetActive(true);
+ 
+                guns[gunId].transform.parent = WeaponHolder.transform;
+                if(gunId == 0)
+                {
+                    Gun.SetActive(true);
+                    Debug.Log("Pistooli tuli");
+                }
+                if(gunId == 1)
+                {
+                    Gun.SetActive(true);
+                    Debug.Log("Rifle tuli");
+                }
+                if (gunId == 2)
+                {
+                    Gun.SetActive(true);
+                    Debug.Log("Heavy pyssy tuli");
+                }
                 Debug.Log("Looting!");
                 hasLooted = true;
-                guns[gunId].transform.parent = WeaponHolder.transform;
+                
                 //guns[2].transform.parent = WeaponHolder.transform;
                 //GameObject.Find("WeaponHolder").GetComponent<WeaponSwitching>().selectWeapon();
             }
@@ -69,6 +86,8 @@ public class Looting : MonoBehaviour
             }
         }
     }
+
+ 
     void PanelAnimation()
     {
      
