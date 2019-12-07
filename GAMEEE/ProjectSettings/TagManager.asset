@@ -15,6 +15,7 @@ TagManager:
   - Loot
   - Rifle
   - Heavy
+  - start door
   layers:
   - Default
   - TransparentFX

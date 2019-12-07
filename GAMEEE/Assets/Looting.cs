@@ -19,14 +19,23 @@ public class Looting : MonoBehaviour
     public GameObject LootLight;
     bool hasLooted = false;
     public int gunId = 0;
-  
+    public Text weaponText;
+    public Text newWeaponText;
+    public GameObject lootsoundObj;
+    bool hasPlayed = false;
+    Animator newWeapon;
+    
 
-
- 
-
+    private void Start()
+    {
+        newWeaponText.gameObject.SetActive(false);
+        newWeapon = newWeaponText.GetComponent<Animator>();
+       
+    }
     // Update is called once per frame
     void Update()
     {
+
         animator = Panel.GetComponent<Animator>();
         dis = Vector3.Distance(LootBox.transform.position, Player.transform.position);
         
@@ -55,34 +64,44 @@ public class Looting : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range))
         {
+
             if (hit.transform.tag == "Loot")
             {
- 
+
+                if(hasPlayed == false)
+                {
+                    newWeaponText.gameObject.SetActive(true);
+                    lootsoundObj.SetActive(true);
+                    Invoke("shutDownSound", 4f);
+                    newWeapon.Play("newGunAnim");
+                    Invoke("shutDownAnimation", 3f);
+                }
+               
                 guns[gunId].transform.parent = WeaponHolder.transform;
+                guns[gunId].SetActive(true);
+                Gun.SetActive(true);
+                Debug.Log("Looting!");
+                hasLooted = true;
                 if(gunId == 0)
                 {
-                    Gun.SetActive(true);
-                    Debug.Log("Pistooli tuli");
+                    weaponText.text = "Plasma Pistol";
                 }
                 if(gunId == 1)
                 {
-                    Gun.SetActive(true);
-                    Debug.Log("Rifle tuli");
+                    weaponText.text = "Rifle";
                 }
-                if (gunId == 2)
+                if(gunId == 2)
                 {
-                    Gun.SetActive(true);
-                    Debug.Log("Heavy pyssy tuli");
+                    weaponText.text = "Rifle";
                 }
-                Debug.Log("Looting!");
-                hasLooted = true;
+                
                 
                 //guns[2].transform.parent = WeaponHolder.transform;
                 //GameObject.Find("WeaponHolder").GetComponent<WeaponSwitching>().selectWeapon();
             }
            if(hasLooted == true)
             {
-                LootLight.gameObject.SetActive(false);
+                LootLight.gameObject.SetActive(false);     
             }
         }
     }
@@ -95,6 +114,7 @@ public class Looting : MonoBehaviour
         {
             if (dis < 4)
             {
+                Panel.SetActive(true);
 
                 if (animator != null)
                 {
@@ -109,4 +129,15 @@ public class Looting : MonoBehaviour
         
 
     }
+    void shutDownSound()
+    {
+        Destroy(lootsoundObj);
+        hasPlayed = true;
+    }
+    void shutDownAnimation()
+    {
+        newWeaponText.gameObject.SetActive(false);
+        hasPlayed = true;
+    }
+    
 }

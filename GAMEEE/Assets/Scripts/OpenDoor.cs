@@ -14,7 +14,12 @@ public class OpenDoor : MonoBehaviour
     Animator animator;
     Animator panelAnimator;
     public bool hasSeen = false;
+    AudioSource infoSound;
 
+    private void Start()
+    {
+        infoSound = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -71,7 +76,7 @@ public class OpenDoor : MonoBehaviour
        
             if (dis < 4)
             {
-
+            infoSound.Play();
                 if (panelAnimator != null)
                 {
                     panelAnimator.GetBool("open");

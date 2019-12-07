@@ -23,8 +23,7 @@ public class Gun : MonoBehaviour
     {
         shotSound = GetComponent<AudioSource>();
         animator = Weapon.GetComponent<Animator>();
-        Flash.Stop();
-        shotSound.Stop();
+
     }
 
     void Update()

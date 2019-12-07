@@ -3,14 +3,14 @@ using UnityEngine.UI;
 public class WeaponSwitching : MonoBehaviour
 {
     public int selectedWeapon = 0;
-    public Text weaponText;
+    //public Text weaponText;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(true);
         selectWeapon();
     }
 
@@ -52,7 +52,7 @@ public class WeaponSwitching : MonoBehaviour
         {
             selectWeapon();
         }
-        setWeapons();
+       // setWeapons();
     }
 
     public void selectWeapon()
@@ -72,7 +72,7 @@ public class WeaponSwitching : MonoBehaviour
             }
     }
 
-    void setWeapons()
+   /* void setWeapons()
     { 
 
 
@@ -94,7 +94,7 @@ public class WeaponSwitching : MonoBehaviour
             weaponText.text = "Heavy";
         }
 
-    }
+    }*/
 
    
    
