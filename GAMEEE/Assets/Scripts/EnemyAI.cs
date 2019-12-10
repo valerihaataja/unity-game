@@ -17,21 +17,23 @@ public class EnemyAI : MonoBehaviour
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
     public float hearingDistance = 20f;
+    public float hitDistance = 2f;
 
     private float damage = 10f;
 
     public bool playerInSight;
     public float distance;
 
+    private bool hitInProgress = false;
+
     private Vector3 lastSightedLocation;
-
-    private Transform childObject;
-    private LineRenderer objectLineRenderer;
-
-    private ParticleSystem particleSystem;
 
     PlayerHealth playerHealth;
     PlayerMovement playerMovement;
+
+    private bool boss = false;
+
+    private AudioSource[] audioSources;
 
     public enum State
     {
@@ -53,7 +55,15 @@ public class EnemyAI : MonoBehaviour
 
         state = EnemyAI.State.PATROL;
 
+
         alive = true;
+
+        if(transform.name == "Titan")
+        {
+            boss = true;
+            hitDistance = 5f;
+            audioSources = GetComponents<AudioSource>();
+        }
 
         //childObject = GameObject.Find("Laser").transform;
         //objectLineRenderer = childObject.GetComponent<LineRenderer>();
@@ -120,22 +130,20 @@ public class EnemyAI : MonoBehaviour
         agent.destination = target.position;
         anim.SetBool("IsRunning", true);
         agent.speed = 4.5f;
+        
         //particleSystem.Play();
         //GameObject.Find("MuzzleFlashEffect").transform.GetComponent<ParticleSystem>().Play();
 
-        if(distance < 2f)
+        if(distance < hitDistance)
         {
-            agent.velocity = Vector3.zero;
-            agent.updatePosition = false;
-            agent.isStopped = true;
+            stopMovement();
             anim.SetBool("IsWalking", false);
             anim.SetBool("IsRunning", false);
             anim.SetBool("HasPunched", true);
         }
-        else
+        else if (distance > hitDistance && !hitInProgress)
         {
-            agent.updatePosition = true;
-            agent.isStopped = false;
+            //resumeMovement();
             anim.SetBool("HasPunched", false);
         }
 
@@ -172,11 +180,18 @@ public class EnemyAI : MonoBehaviour
                // Debug.Log(hit.collider.gameObject.name);
                 if (hit.collider.gameObject.tag == "Player")
                 {
+                    if(state == EnemyAI.State.INVESTIGATE || state == EnemyAI.State.PATROL)
+                    {
+                        
+                    }
                     state = EnemyAI.State.CHASE;
-                    playerInSight = true;
-                    agent.isStopped = false;
-                    agent.updatePosition = true;
-                    
+                    if(!hitInProgress)
+                    {
+                        playerInSight = true;
+                        agent.isStopped = false;
+                        agent.updatePosition = true;
+                    }
+
                     lastSightedLocation = hit.point;
                     //anim.SetBool("Walk", true);
                 }
@@ -195,7 +210,7 @@ public class EnemyAI : MonoBehaviour
     public void HitEvent()
     {
         Debug.Log("Player hit!");
-        if(distance < 2f)
+        if (distance < hitDistance)
         {
             playerHealth.takeDamage(damage);
         }
@@ -249,5 +264,24 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    public void stopMovement()
+    {
+        agent.velocity = Vector3.zero;
+        agent.updatePosition = false;
+        agent.isStopped = true;
+        hitInProgress = true;
+    }
+
+    public void resumeMovement()
+    {
+        agent.updatePosition = true;
+        agent.isStopped = false;
+        hitInProgress = false;
+    }
+
+    public void Roar()
+    {
+        audioSources[1].Play();
+    }
 
 }

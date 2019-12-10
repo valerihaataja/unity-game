@@ -9,17 +9,29 @@ public class EnemyHealth : MonoBehaviour
     public float health;
     EnemyAI enemyAI;
     public RectTransform healthbar;
+    private bool boss = false;
 
     void Start()
     {
         health = 100f;
         enemyAI = transform.GetComponent<EnemyAI>();
+        if (transform.name == "Titan")
+        {
+            boss = true;
+        }
     }
 
 
     public void takeDamage(float amount)
     {
-        health -= amount;
+        if(boss)
+        {
+            health -= amount / 3f;
+        }else
+        {
+            health -= amount;
+        }
+
 
         if (health <= 0)
         {
