@@ -22,9 +22,12 @@ public class Looting : MonoBehaviour
     public Text weaponText;
     public Text newWeaponText;
     public GameObject lootsoundObj;
+    public GameObject LootBox2;
+    public GameObject LootBox3;
     bool hasPlayed = false;
     Animator newWeapon;
-    
+    public float dis2;
+   
 
     private void Start()
     {
@@ -38,7 +41,9 @@ public class Looting : MonoBehaviour
 
         animator = Panel.GetComponent<Animator>();
         dis = Vector3.Distance(LootBox.transform.position, Player.transform.position);
-        
+        dis2 = Vector3.Distance(LootBox2.transform.position, Player.transform.position);
+
+
         if (Input.GetKeyDown("e") && range > 0)
         {
             CheckLoot();
@@ -56,19 +61,31 @@ public class Looting : MonoBehaviour
             }
            
         }
+   
+       if(Player.transform.position.z > -50 && hasLooted == true)
+        {
+            LootBox.gameObject.SetActive(false);
+            LootBox2.gameObject.SetActive(true);
+        }
+       if(Player.transform.position.z > -30 && hasLooted == true)
+        {
+            LootBox2.gameObject.SetActive(false);
+            LootBox3.gameObject.SetActive(true);
+        }
 
     }
 
-    void CheckLoot()
+    public void CheckLoot()
     {
         RaycastHit hit;
         if(Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range))
         {
 
-            if (hit.transform.tag == "Loot")
+            if (hit.transform.tag == "Loot" || hit.transform.tag == "Loot2" || hit.transform.tag == "Loot3")
             {
+                printWeapons();
 
-                if(hasPlayed == false)
+                if (hasPlayed == false)
                 {
                     newWeaponText.gameObject.SetActive(true);
                     lootsoundObj.SetActive(true);
@@ -79,21 +96,15 @@ public class Looting : MonoBehaviour
                
                 guns[gunId].transform.parent = WeaponHolder.transform;
                 guns[gunId].SetActive(true);
+
+                if (gunId == 1 || gunId == 2) 
+                {
+                    guns[gunId-1].SetActive(false);
+                }
                 Gun.SetActive(true);
                 Debug.Log("Looting!");
                 hasLooted = true;
-                if(gunId == 0)
-                {
-                    weaponText.text = "Plasma Pistol";
-                }
-                if(gunId == 1)
-                {
-                    weaponText.text = "Rifle";
-                }
-                if(gunId == 2)
-                {
-                    weaponText.text = "Rifle";
-                }
+              
                 
                 
                 //guns[2].transform.parent = WeaponHolder.transform;
@@ -101,9 +112,12 @@ public class Looting : MonoBehaviour
             }
            if(hasLooted == true)
             {
-                LootLight.gameObject.SetActive(false);     
+                LootLight.gameObject.SetActive(false);
+            
             }
+         
         }
+      
     }
 
  
@@ -138,6 +152,21 @@ public class Looting : MonoBehaviour
     {
         newWeaponText.gameObject.SetActive(false);
         hasPlayed = true;
+    }
+    public void printWeapons()
+    {
+        if (gunId == 0)
+        {
+            weaponText.text = "Plasma Pistol";
+        }
+        if (gunId == 1)
+        {
+            weaponText.text = "Rifle";
+        }
+        if (gunId == 2)
+        {
+            weaponText.text = "Rifle";
+        }
     }
     
 }
