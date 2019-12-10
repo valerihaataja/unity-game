@@ -9,12 +9,16 @@ public class OpenDoor : MonoBehaviour
     public GameObject DistanceCheck;
     public GameObject Panel;
     public float dis;
-    public Camera fpsCamera;
+    public Camera fpsCamera; 
     public float range = 4f;
     Animator animator;
     Animator panelAnimator;
     public bool hasSeen = false;
     AudioSource infoSound;
+    public GameObject DoorOpenSound;
+
+
+
 
     private void Start()
     {
@@ -35,14 +39,23 @@ public class OpenDoor : MonoBehaviour
         {
             PanelAnimation();
         }
-        if (dis > 4)
+        if (dis > 4f)
         {
             panelAnimator.SetBool("open", false);
             animator.SetBool("open", false);
-            if(dis > 8 && hasSeen == true)
+
+            if (dis > 8 && hasSeen == true)
             {
                 Panel.gameObject.SetActive(false);
             }
+         
+        if(dis > 6f)
+            {
+                DoorOpenSound.gameObject.SetActive(false);
+
+            }
+
+
         }
 
     }
@@ -55,11 +68,10 @@ public class OpenDoor : MonoBehaviour
         {
             if (hit.transform.tag == "Door")
             {
-                
                 Debug.Log(hit.transform.name);
                 if (animator != null)
                 {
-
+                    DoorOpenSound.gameObject.SetActive(true);
                     animator.GetBool("open");
                     animator.SetBool("open", true);
                 }
@@ -76,6 +88,7 @@ public class OpenDoor : MonoBehaviour
        
             if (dis < 4)
             {
+
             infoSound.Play();
                 if (panelAnimator != null)
                 {
@@ -85,9 +98,8 @@ public class OpenDoor : MonoBehaviour
                 }
             }
 
-       
-
     }
+   
 
 }
 

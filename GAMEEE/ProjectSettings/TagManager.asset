@@ -16,6 +16,10 @@ TagManager:
   - Rifle
   - Heavy
   - start door
+  - Loot2
+  - Loot3
+  - sound off
+  - Door2
   layers:
   - Default
   - TransparentFX
