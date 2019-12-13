@@ -6,40 +6,55 @@ public class Gun : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public float impactForce = 30f;
-//  public float fireRate = 15f;
+    public float fireRate = 15f;
     public Camera fpsCam;
-    public GameObject Holder;
-    public int selected;
     public ParticleSystem Flash;
-    public AudioSource shotSound;
-
+    AudioSource shotSound;
+    Animator animator;
     public GameObject impactEffect;
-
+    public GameObject Weapon;
     EnemyHealth enemyHealth;
 
-    //private float nextTimeToFire = 0f;
+    private float nextTimeToFire = 0f;
 
 
-    
+
+    void Start()
+    {
+        shotSound = GetComponent<AudioSource>();
+        animator = Weapon.GetComponent<Animator>();
+
+    }
+
     void Update()
     {
-     
         
 
-        if (Input.GetButtonDown("Fire1"))///Time.time >= nextTimeToFire)
+        if (Input.GetButton("Fire1")&&Time.time >= nextTimeToFire && transform.tag != "Pistol")
         {
-          //nextTimeToFire = Time.time + 1f / fireRate;
+          nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
+            if (transform.tag == "Rifle")
+            {
+                animator.Play("rifleShootAnim");
+            }
+            if(transform.tag == "Heavy")
+            {
+                animator.Play("heavyShootAnim");
+            }
         }
-        
-        
+       
+        if(Input.GetButtonDown("Fire1") && transform.tag == "Pistol")
+        {
+            Shoot();
+            animator.Play("shootAnim");
+        }
         
     }
     void Shoot()
     {
-
-        shotSound.Play();
-        Flash.Play();
+   
+       
         RaycastHit hit;
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
@@ -63,9 +78,10 @@ public class Gun : MonoBehaviour
             GameObject impactGO =Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impactGO, 2f);
         }
+        shotSound.Play();
+        Flash.Play();
     }
-  
-       
-    }
+        
 
 
+    }

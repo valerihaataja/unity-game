@@ -477,7 +477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -552,6 +552,7 @@ GameObject:
   - component: {fileID: 279979737}
   - component: {fileID: 279979736}
   - component: {fileID: 279979735}
+  - component: {fileID: 279979740}
   m_Layer: 9
   m_Name: Cube(Clone)(Clone)
   m_TagString: Untagged
@@ -975,6 +976,25 @@ Transform:
   m_Father: {fileID: 1092203312}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &279979740
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279979734}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aa817058b3fdd29429b34f065a7a8770, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &321739972
 GameObject:
   m_ObjectHideFlags: 0
@@ -5131,7 +5151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1931324583949736, guid: 9c49b9c1648647e47be8167f82a5f87e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4934111147742088, guid: 9c49b9c1648647e47be8167f82a5f87e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7667,6 +7687,7 @@ MonoBehaviour:
   destPoint: 0
   fieldOfViewAngle: 110
   perceptionDistance: 20
+  hearingDistance: 20
   playerInSight: 0
   distance: 0
   state: 0
@@ -7791,6 +7812,7 @@ MonoBehaviour:
   destPoint: 0
   fieldOfViewAngle: 110
   perceptionDistance: 20
+  hearingDistance: 20
   playerInSight: 0
   distance: 0
   state: 0
@@ -22299,6 +22321,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6904614808106467960, guid: 1063b11c327479c44bec25a4bdb64705,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8227474398939226280, guid: 1063b11c327479c44bec25a4bdb64705,
         type: 3}
       propertyPath: m_Name
