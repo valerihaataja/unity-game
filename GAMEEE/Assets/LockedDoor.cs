@@ -11,19 +11,36 @@ public class LockedDoor : MonoBehaviour
     public Camera fpsCamera;
     public float range = 4f;
     Animator animator;
+    Animator panelAnimator;
     public GameObject DoorOpenSound;
-
-
+    public bool isUnlocked = false;
+    AudioSource infoSound;
+    public GameObject panel;
+    private void Start()
+    {
+        infoSound = GetComponent<AudioSource>();
+    }
 
 
     void Update()
     {
         animator = Door.GetComponent<Animator>();
+        panelAnimator = panel.GetComponent<Animator>();
         dis = Vector3.Distance(DistanceCheck.transform.position, Player.transform.position);
 
         if (Input.GetKeyDown("e") && range > 0)
         {
-            CheckObject();
+            if(isUnlocked == true)
+            {
+                CheckObject();
+
+            }
+            if(isUnlocked == false)
+            {
+                PanelAnimation();
+
+            }
+
         }
 
         if (dis > 4f)
@@ -35,10 +52,10 @@ public class LockedDoor : MonoBehaviour
         if (dis > 6f)
         {
             DoorOpenSound.gameObject.SetActive(false);
-
+            panelAnimator.SetBool("open", false);
         }
-
-
+      
+      
 
 
 
@@ -66,6 +83,20 @@ public class LockedDoor : MonoBehaviour
             }
 
 
+        }
+
+    }
+    void PanelAnimation()
+    {
+        if (dis < 4)
+        {
+
+            infoSound.Play();
+            if (panelAnimator != null)
+            {
+                panelAnimator.GetBool("open");
+                panelAnimator.SetBool("open", true);
+            }
         }
 
     }
