@@ -20,8 +20,8 @@ public class PlayerHealth : MonoBehaviour
         health = 100f;
         image = damageIndicator.GetComponent<Image>();
         HideDamageIndicator();
-        PlayerData data = SaveSystem.LoadPlayer();
-        health = data.health;
+        saveData();
+        LoadData();
         healthbar.sizeDelta = new Vector2(health * 4, healthbar.sizeDelta.y);
     }
 
@@ -62,9 +62,15 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void OnApplicationQuit()
+    public void saveData()
     {
         SaveSystem.SavePlayer(this);
         Debug.Log("saved");
+    }
+
+    public void LoadData()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        health = data.health;
     }
 }

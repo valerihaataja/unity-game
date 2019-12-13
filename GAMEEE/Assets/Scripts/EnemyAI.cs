@@ -118,7 +118,7 @@ public class EnemyAI : MonoBehaviour
             return;
         }
         agent.destination = patrolPoints[destPoint].position;
-        if(!agent.pathPending && agent.remainingDistance < 1f)
+        if(!agent.pathPending && agent.remainingDistance < 3f)
         {
             destPoint = (destPoint + 1) % patrolPoints.Length;
         }
@@ -270,6 +270,7 @@ public class EnemyAI : MonoBehaviour
         agent.updatePosition = false;
         agent.isStopped = true;
         hitInProgress = true;
+        transform.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     public void resumeMovement()
@@ -277,6 +278,7 @@ public class EnemyAI : MonoBehaviour
         agent.updatePosition = true;
         agent.isStopped = false;
         hitInProgress = false;
+        transform.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public void Roar()

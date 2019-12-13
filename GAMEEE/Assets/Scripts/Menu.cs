@@ -13,9 +13,12 @@ public class Menu : MonoBehaviour
     Resolution[] resolutions;
     public TMPro.TMP_Dropdown resolutionDropdown;
     public TMPro.TMP_Dropdown qualityDropdown;
+    public Button continueButton;
+
 
     void Start()
     {
+
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
@@ -43,6 +46,7 @@ public class Menu : MonoBehaviour
 
    public void StartGame()
     {
+        SaveSystem.DeleteData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Debug.Log("button pressed");
     }
@@ -74,6 +78,19 @@ public class Menu : MonoBehaviour
     {
         Screen.fullScreen = isFullScreen;
     }
+
+    public void CheckContinue()
+    {
+        if(SaveSystem.CheckSave())
+        {
+            continueButton.gameObject.SetActive(true);
+        }
+    }
    
+    public void ContinueGame()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        SceneManager.LoadScene(data.level);
+    }
 
 }

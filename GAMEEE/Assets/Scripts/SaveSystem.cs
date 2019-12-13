@@ -71,4 +71,24 @@ public static class SaveSystem
         }
     }
 
+    public static bool CheckSave()
+    {
+        string path = Application.persistentDataPath + "/player.bin";
+        if(File.Exists(path))
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
+
+    public static void DeleteData()
+    {
+        string path = Application.persistentDataPath + "/player.bin";
+        File.Delete(path);
+        path = Application.persistentDataPath + "/loot.bin";
+        File.Delete(path);
+    }
+
 }
