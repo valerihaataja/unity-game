@@ -1725,6 +1725,7 @@ MonoBehaviour:
   fieldOfViewAngle: 110
   perceptionDistance: 20
   hearingDistance: 20
+  hitDistance: 2
   playerInSight: 0
   distance: 0
   state: 0

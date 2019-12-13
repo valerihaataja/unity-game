@@ -6,86 +6,113 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController controller;
+    
 
-    [SerializeField] public float speed = 6f;
-    [SerializeField] public float gravity = -9.81f * 3;
-    [SerializeField] public float jumpHeight = 2f;
+     
+    float speed;
+    [SerializeField] public float runSpeed = 6f;
     [SerializeField] public float crouchSpeed = 3f;
+    [SerializeField] public float gravity = -9.81f * 3;
+    [SerializeField] public float jumpHeight = 1f;
 
 
     public Transform groundCheck;
     public float groundDistance;
     public LayerMask groundMask;
-    public Transform ceilingCheck;
-    public float ceilingDistance;
-    public LayerMask ceilingMask;
-
-
+    
 
     Vector3 velocity;
     bool isGrounded;
-    bool hitCeiling;
+
+    
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        hitCeiling = Physics.CheckSphere(ceilingCheck.position, ceilingDistance, ceilingMask);
+        playerMovement();
+    }
 
-        if(hitCeiling){
-            print ("hitCeiling");
+    
+    
+    private void playerMovement()
+    {
+
+        //MOVEMENT
+
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        
+        Vector3 move = transform.right * x + transform.forward * z;
+
+        controller.Move(move * speed * Time.deltaTime);
+
+
+        //CROUCHING
+        /*if(isGrounded && Input.GetKey(KeyCode.LeftControl))
+        {
+            speed = crouchSpeed;
+            controller.transform.localScale = new Vector3(1.0f, 0.6f, 1.0f);
+           
+        }else
+        {
+            controller.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            speed = runSpeed;
         }
+
+        if(isGrounded == false && Input.GetKey(KeyCode.LeftControl))
+        {
+            speed = runSpeed;
+            controller.transform.localScale = new Vector3(1.0f, 0.6f, 1.0f);
+        }
+        if(isGrounded == false && Input.GetKey(KeyCode.LeftControl ))
+        {
+            speed = crouchSpeed;
+            controller.transform.localScale = new Vector3(1.0f, 0.6f, 1.0f);
+        }*/
+
+        //WALKING
+        if(isGrounded && Input.GetKey(KeyCode.LeftShift)) {
+            speed = crouchSpeed;
+        }else{
+            speed = runSpeed;
+        }
+
+        //JUMPING 
 
 
         if(isGrounded && velocity.y < 0){
             controller.slopeLimit = 45f;
             velocity.y = -2f;
         }
-        if(isGrounded == false && Input.GetKey(KeyCode.LeftControl))
-        {
-            speed = 6f;
-        }
-
-        if(isGrounded && Input.GetKey(KeyCode.LeftControl))
-        {
-            speed = crouchSpeed;
-            controller.transform.localScale = new Vector3(1.0f, 0.8f, 1.0f);
-
-        }else
-        {
-            controller.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            speed = 6f;
-        }
-
-        if(isGrounded == false && Input.GetKey(KeyCode.LeftControl))
-        {
-            speed = crouchSpeed;
-            controller.transform.localScale = new Vector3(1.0f, 0.8f, 1.0f);
-        }
-
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * speed * Time.deltaTime);
+        
 
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
-            controller.slopeLimit = 100f;
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            do
+            {
+                controller.slopeLimit = 100f;
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }while(!isGrounded && controller.collisionFlags != CollisionFlags.Above);
         }
+        /*if(Input.GetButtonDown("Jump") && isGrounded)
+        {
+            
+                controller.slopeLimit = 100f;
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }*/
 
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+        Debug.Log(velocity.magnitude);
+
     }
 }
