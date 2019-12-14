@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System.IO;
 using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEditor.Compilation;
+#endif
 using System.Text.RegularExpressions;
 
 namespace SNAP

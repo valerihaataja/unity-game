@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+using UnityEngine.UI;
 using System.IO;
+
+#if UNITY_EDITOR
+using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEditor.Compilation;
-
+#endif
 namespace SNAP
 { 
     public enum SnapRP

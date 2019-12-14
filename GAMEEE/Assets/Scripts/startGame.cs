@@ -14,10 +14,12 @@ public class startGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(Input.GetKeyDown(KeyCode.Return) && SceneManager.GetActiveScene().name == "Credits")
         {
             Application.Quit();
         }
+        
     }
 
     public void Play()
