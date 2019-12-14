@@ -6,7 +6,7 @@ public class footsteps : MonoBehaviour
 {
     public CharacterController cc;
     public AudioSource audioSource;
-    bool isRunning = false;
+    public bool isRunning = false;
     // Start is called before the first frame update
     void Start()
     {

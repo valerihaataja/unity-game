@@ -26,7 +26,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if(boss)
         {
-            health -= amount / 4f;
+            health -= amount / 6f;
         }else
         {
             health -= amount;

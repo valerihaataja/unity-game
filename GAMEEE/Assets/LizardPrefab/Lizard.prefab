@@ -1716,11 +1716,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolPoints:
   - {fileID: 0}
+  - {fileID: 0}
   destPoint: 0
   fieldOfViewAngle: 110
   perceptionDistance: 20
   hearingDistance: 20
-  hitDistance: 2
+  hitDistance: 3
   playerInSight: 0
   distance: 0
   state: 0

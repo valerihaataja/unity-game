@@ -22,8 +22,8 @@ public class Looting : MonoBehaviour
     public Text weaponText;
     public Text newWeaponText;
     public GameObject lootsoundObj;
-    public GameObject LootBox2;
-    public GameObject LootBox3;
+    //public GameObject LootBox2;
+   // public GameObject LootBox3;
     bool hasPlayed = false;
     Animator newWeapon;
     public float dis2;
@@ -31,7 +31,7 @@ public class Looting : MonoBehaviour
 
     private void Start()
     {
-        newWeaponText.gameObject.SetActive(false);
+        //newWeaponText.gameObject.SetActive(false);
         newWeapon = newWeaponText.GetComponent<Animator>();
        
     }
@@ -41,7 +41,7 @@ public class Looting : MonoBehaviour
 
         animator = Panel.GetComponent<Animator>();
         dis = Vector3.Distance(LootBox.transform.position, Player.transform.position);
-        dis2 = Vector3.Distance(LootBox2.transform.position, Player.transform.position);
+        //dis2 = Vector3.Distance(LootBox2.transform.position, Player.transform.position);
 
 
         if (Input.GetKeyDown("e") && range > 0)
@@ -62,7 +62,7 @@ public class Looting : MonoBehaviour
            
         }
    
-       if(Player.transform.position.z > -50 && hasLooted == true)
+     /*  if(Player.transform.position.z > -50 && hasLooted == true)
         {
             LootBox.gameObject.SetActive(false);
             LootBox2.gameObject.SetActive(true);
@@ -71,7 +71,7 @@ public class Looting : MonoBehaviour
         {
             LootBox2.gameObject.SetActive(false);
             LootBox3.gameObject.SetActive(true);
-        }
+        }*/
 
     }
 
@@ -168,5 +168,8 @@ public class Looting : MonoBehaviour
             weaponText.text = "Rifle";
         }
     }
+
+
+
     
 }

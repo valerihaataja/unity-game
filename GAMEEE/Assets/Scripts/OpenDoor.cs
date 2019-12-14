@@ -15,6 +15,7 @@ public class OpenDoor : MonoBehaviour
     Animator panelAnimator;
     public bool hasSeen = false;
     AudioSource infoSound;
+    public bool destroyDoor;
     public GameObject DoorOpenSound;
 
 
@@ -74,6 +75,10 @@ public class OpenDoor : MonoBehaviour
                     DoorOpenSound.gameObject.SetActive(true);
                     animator.GetBool("open");
                     animator.SetBool("open", true);
+                    if(destroyDoor)
+                    {
+                        Door.gameObject.SetActive(false);
+                    }
                 }
 
             }
@@ -89,12 +94,16 @@ public class OpenDoor : MonoBehaviour
             if (dis < 4)
             {
 
-            infoSound.Play();
+            
                 if (panelAnimator != null)
                 {
                     panelAnimator.GetBool("open");
                     panelAnimator.SetBool("open", true);
                     hasSeen = true;
+                }
+                if(infoSound != null)
+                {
+                    infoSound.Play();
                 }
             }
 

@@ -17,9 +17,9 @@ public class EnemyAI : MonoBehaviour
     public float fieldOfViewAngle = 110f;
     public float perceptionDistance = 20f;
     public float hearingDistance = 20f;
-    public float hitDistance = 2f;
+    public float hitDistance = 4f;
 
-    private float damage = 10f;
+    private float damage = 30f;
 
     public bool playerInSight;
     public float distance;
@@ -29,11 +29,12 @@ public class EnemyAI : MonoBehaviour
     private Vector3 lastSightedLocation;
 
     PlayerHealth playerHealth;
-    PlayerMovement playerMovement;
+    footsteps playerMovement;
 
     private bool boss = false;
 
     private AudioSource[] audioSources;
+    public GameObject lizardArmy;
 
     public enum State
     {
@@ -52,6 +53,7 @@ public class EnemyAI : MonoBehaviour
         lastSightedLocation = transform.position;
 
         playerHealth = target.GetComponent<PlayerHealth>();
+        playerMovement = target.GetComponent<footsteps>();
 
         state = EnemyAI.State.PATROL;
 
@@ -61,7 +63,8 @@ public class EnemyAI : MonoBehaviour
         if(transform.name == "Titan")
         {
             boss = true;
-            hitDistance = 5f;
+            hitDistance = 6f;
+            damage = 40f;
             audioSources = GetComponents<AudioSource>();
         }
 
@@ -129,7 +132,7 @@ public class EnemyAI : MonoBehaviour
         //objectLineRenderer.enabled = true;
         agent.destination = target.position;
         anim.SetBool("IsRunning", true);
-        agent.speed = 4.5f;
+        agent.speed = 7f;
         
         //particleSystem.Play();
         //GameObject.Find("MuzzleFlashEffect").transform.GetComponent<ParticleSystem>().Play();
@@ -225,6 +228,8 @@ public class EnemyAI : MonoBehaviour
             agent.updatePosition = false;
             agent.isStopped = true;
             anim.SetTrigger("IsDead");
+            transform.GetComponent<CapsuleCollider>().enabled = false;
+            transform.GetComponent<Rigidbody>().isKinematic = true;
             Destroy(gameObject, 10);
         }
     }
@@ -232,7 +237,7 @@ public class EnemyAI : MonoBehaviour
     void Hearing()
     {
         //Jos pelaaja liikkuu nopeasti tai ampuu
-        if(state != EnemyAI.State.CHASE)
+        if(state != EnemyAI.State.CHASE && playerMovement.isRunning)
         {
             NavMeshPath navMeshPath = new NavMeshPath();
             if (agent.enabled)
@@ -284,6 +289,7 @@ public class EnemyAI : MonoBehaviour
     public void Roar()
     {
         audioSources[1].Play();
+        lizardArmy.gameObject.SetActive(true);
     }
 
 }

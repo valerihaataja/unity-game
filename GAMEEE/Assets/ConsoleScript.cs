@@ -59,7 +59,8 @@ public class ConsoleScript : MonoBehaviour
 
     void soundOff()
     {
-        Destroy(secretDoor);
-        Destroy(secretDoorSound);
+        secretDoor.gameObject.SetActive(false);
+        secretDoorSound.gameObject.SetActive(false);
+   
     }
 }

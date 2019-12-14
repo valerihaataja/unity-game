@@ -10,6 +10,7 @@ public class turnSoundsOff : MonoBehaviour
     public GameObject trigger;
     public GameObject music;
     public Rigidbody rb;
+    public GameObject roarSound;
     // Start is called before the first frame update
   
     private void FixedUpdate()
@@ -24,6 +25,8 @@ public class turnSoundsOff : MonoBehaviour
                 rb.AddForce(300f * Time.deltaTime, 0, 0);
 
                 music.gameObject.SetActive(true);
+                roarSound.gameObject.SetActive(true);
+                Invoke("turnOff", 8f);
             }
             else
             {
@@ -34,6 +37,10 @@ public class turnSoundsOff : MonoBehaviour
 
         }
        
+    }
+    void turnOff()
+    {
+        roarSound.gameObject.SetActive(false);
     }
    
     

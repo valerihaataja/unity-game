@@ -18,6 +18,8 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
+        
+        
 
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -46,7 +48,7 @@ public class Menu : MonoBehaviour
 
    public void StartGame()
     {
-        SaveSystem.DeleteData();
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Debug.Log("button pressed");
     }

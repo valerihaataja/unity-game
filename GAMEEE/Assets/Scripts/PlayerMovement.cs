@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+ 
 
     
 
@@ -81,8 +82,10 @@ public class PlayerMovement : MonoBehaviour
         //WALKING
         if(isGrounded && Input.GetKey(KeyCode.LeftShift)) {
             speed = crouchSpeed;
+            
         }else{
             speed = runSpeed;
+            
         }
 
         //JUMPING 
@@ -112,7 +115,6 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
-        Debug.Log(velocity.magnitude);
 
     }
 }
