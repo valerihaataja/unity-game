@@ -165,6 +165,11 @@ PrefabInstance:
       propertyPath: LootBox3
       value: 
       objectReference: {fileID: 7042870539617774198}
+    - target: {fileID: 4953934502315339009, guid: 72abc8a5b4a9af9478f35d515a59d8ba,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 931855431, guid: 72abc8a5b4a9af9478f35d515a59d8ba, type: 3}
       propertyPath: m_Controller
       value: 
