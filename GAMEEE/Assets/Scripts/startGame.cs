@@ -26,6 +26,8 @@ public class startGame : MonoBehaviour
     {
         SaveSystem.DeleteData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
    public void Menu()

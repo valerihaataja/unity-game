@@ -30,7 +30,7 @@ public class NextLevel : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, range))
             {
-                if (hit.transform.tag == "Exit" && dis < 3f)
+                if (hit.transform.tag == "Exit" && dis < 4f)
                 {
                     playerHealth.saveData();
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
